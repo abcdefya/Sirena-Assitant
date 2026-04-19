@@ -1,5 +1,16 @@
-"""Compatibility wrapper for the Groq LLM service."""
+from langchain_groq import ChatGroq
+from src.cores.config import GROQ_API_KEY, GROQ_MODEL
+from src.cores.logger import get_logger
 
-from .groq_lm import GroqLLMService, SYSTEM_PROMPT, load_system_prompt
+logger = get_logger(__name__)
 
-__all__ = ["GroqLLMService", "SYSTEM_PROMPT", "load_system_prompt"]
+_llm: ChatGroq | None = None
+
+
+def get_llm() -> ChatGroq:
+    global _llm
+    if _llm is None:
+        logger.info(f"Initializing GROQ LLM: {GROQ_MODEL}")
+        _llm = ChatGroq(api_key=GROQ_API_KEY, model=GROQ_MODEL, temperature=0)
+        logger.info("GROQ LLM initialized")
+    return _llm
