@@ -20,6 +20,7 @@ Sirena is a personal portfolio assistant embedded in a portfolio website. HR vis
 | Vector store | ChromaDB (persistent, local) |
 | Agent framework | LangGraph |
 | API | FastAPI (streaming SSE) |
+| Rate limiting | `slowapi` (per-IP, in-memory) |
 | Deployment | Docker (single-stage, Python 3.11-slim) |
 
 ---
@@ -151,6 +152,17 @@ data: {"token": " have"}
 ...
 data: {"done": true}
 ```
+
+### Rate Limiting
+
+Applied to `POST /chat` via `slowapi` (per-IP, in-memory):
+
+| Limit | Value | Purpose |
+|---|---|---|
+| Per-IP per minute | 10 req/min | Prevent request hammering |
+| Per-IP per hour | 50 req/hour | Prevent sustained abuse |
+
+Exceeding limits returns `429 Too Many Requests`. Counters reset on container restart (acceptable for single-container portfolio deployment). `slowapi` is added to `requirements.txt`.
 
 ### Error Handling
 
