@@ -1,6 +1,6 @@
 import logging
 import sys
-from src.cores.config import LOG_LEVEL
+from src.cores import config
 
 
 def get_logger(name: str) -> logging.Logger:
@@ -11,5 +11,5 @@ def get_logger(name: str) -> logging.Logger:
             "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
         ))
         logger.addHandler(handler)
-    logger.setLevel(getattr(logging, LOG_LEVEL.upper(), logging.INFO))
+    logger.setLevel(getattr(logging, config.LOG_LEVEL.upper(), logging.INFO))
     return logger
