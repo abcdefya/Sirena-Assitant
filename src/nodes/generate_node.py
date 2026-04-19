@@ -1,4 +1,4 @@
-from typing import AsyncGenerator
+from typing import AsyncIterator
 from src.agents.state import AgentState
 from src.services.groq_llm import get_llm
 from src.cores.logger import get_logger
@@ -25,7 +25,7 @@ def _build_messages(state: AgentState, context: str = "") -> list[dict]:
     return messages
 
 
-async def stream_answer(state: AgentState) -> AsyncGenerator[str, None]:
+async def stream_answer(state: AgentState) -> AsyncIterator[str]:
     documents = state.get("documents", [])
     docs_relevant = state.get("docs_relevant", False)
     context = ""
