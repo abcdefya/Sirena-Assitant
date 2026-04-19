@@ -44,9 +44,10 @@ def get_vectorstore() -> Chroma:
 
 def ingest_documents() -> None:
     vectorstore = get_vectorstore()
-    collection = vectorstore._collection
-    if collection.count() > 0:
-        logger.info(f"ChromaDB already has {collection.count()} chunks — skipping ingestion")
+    # Use public ChromaDB API to check document count
+    count = vectorstore.get()["ids"]
+    if count:
+        logger.info(f"ChromaDB already has {len(count)} chunks — skipping ingestion")
         return
     docs = _load_markdown_files()
     if not docs:

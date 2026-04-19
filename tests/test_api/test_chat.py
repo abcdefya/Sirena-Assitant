@@ -1,4 +1,4 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, AsyncMock
 from fastapi.testclient import TestClient
 
 
@@ -21,7 +21,7 @@ def test_chat_returns_streaming_response():
          patch("src.api.routes.chat.get_pipeline") as mock_pipeline, \
          patch("src.api.routes.chat.stream_answer", side_effect=mock_stream_answer):
         mock_app_instance = MagicMock()
-        mock_app_instance.invoke.return_value = mock_state
+        mock_app_instance.ainvoke = AsyncMock(return_value=mock_state)
         mock_pipeline.return_value = mock_app_instance
 
         from src.api.main import app

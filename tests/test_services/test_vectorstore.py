@@ -13,14 +13,10 @@ def test_get_vectorstore_returns_singleton():
 
 
 def test_ingest_documents_skips_if_collection_not_empty():
-    mock_collection = MagicMock()
-    mock_collection.count.return_value = 10
     mock_store = MagicMock()
-    mock_store._collection = mock_collection
+    mock_store.get.return_value = {"ids": ["id1", "id2", "id3"]}
 
     with patch("src.services.vectorstore.get_vectorstore", return_value=mock_store):
-        from src.services import vectorstore as vs_module
-        vs_module._vectorstore = mock_store
         from src.services.vectorstore import ingest_documents
         ingest_documents()
         mock_store.add_documents.assert_not_called()
@@ -30,10 +26,8 @@ def test_ingest_documents_ingests_when_collection_empty(tmp_path):
     md_file = tmp_path / "test.md"
     md_file.write_text("# Test\nThis is a test document.")
 
-    mock_collection = MagicMock()
-    mock_collection.count.return_value = 0
     mock_store = MagicMock()
-    mock_store._collection = mock_collection
+    mock_store.get.return_value = {"ids": []}
 
     with patch("src.services.vectorstore.get_vectorstore", return_value=mock_store), \
          patch("src.services.vectorstore.DATA_DIR", tmp_path):

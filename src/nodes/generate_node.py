@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import AsyncIterator
 from src.agents.state import AgentState
 from src.services.groq_llm import get_llm
@@ -5,11 +6,18 @@ from src.cores.logger import get_logger
 
 logger = get_logger(__name__)
 
-_SYSTEM_PROMPT = (
-    "You are Sirena, a friendly and professional portfolio assistant. "
-    "Answer questions about the portfolio owner based on the provided context and chat history. "
-    "Be concise and accurate. If you don't know something, say so."
-)
+
+def _load_system_prompt() -> str:
+    prompt_path = Path(__file__).parent.parent / "prompts" / "system_prompt.md"
+    if prompt_path.exists():
+        return prompt_path.read_text(encoding="utf-8")
+    return (
+        "You are Sirena, a friendly and professional portfolio assistant. "
+        "Answer questions about the portfolio owner based on the provided context and chat history. "
+        "Be concise and accurate. If you don't know something, say so."
+    )
+
+_SYSTEM_PROMPT = _load_system_prompt()
 
 
 def _build_messages(state: AgentState, context: str = "") -> list[dict]:

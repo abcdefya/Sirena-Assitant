@@ -8,6 +8,7 @@ from src.cores.session import get_history, append_turn, clear_session
 from src.nodes.generate_node import stream_answer
 from src.cores.logger import get_logger
 from src.api.limiter import limiter
+from src.cores.config import RATE_LIMIT_PER_MINUTE, RATE_LIMIT_PER_HOUR
 
 logger = get_logger(__name__)
 router = APIRouter()
@@ -19,7 +20,7 @@ class ChatRequest(BaseModel):
 
 
 @router.post("/chat")
-@limiter.limit("10/minute;50/hour")
+@limiter.limit(f"{RATE_LIMIT_PER_MINUTE}/minute;{RATE_LIMIT_PER_HOUR}/hour")
 async def chat(request: Request, body: ChatRequest):
     session_id = body.session_id
     question = body.message
@@ -37,7 +38,7 @@ async def chat(request: Request, body: ChatRequest):
     }
 
     pipeline = get_pipeline()
-    result_state: AgentState = pipeline.invoke(initial_state)
+    result_state: AgentState = await pipeline.ainvoke(initial_state)
 
     async def token_stream():
         full_answer = ""
