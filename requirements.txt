@@ -1,0 +1,15 @@
+langchain
+langchain-core
+langchain-community
+pydantic
+langgraph
+langchain-groq
+sentence-transformers
+groq
+chromadb
+requests
+python-dotenv
+fastapi
+uvicorn
+langsmith[claude-agent-sdk]
+
