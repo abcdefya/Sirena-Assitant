@@ -28,6 +28,9 @@ app.add_middleware(
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
+    allow_origins=["https://my-portfolio-web-black.vercel.app"],
+    allow_methods=["POST", "DELETE"],
+    allow_headers=["Content-Type"],
 )
 
 
