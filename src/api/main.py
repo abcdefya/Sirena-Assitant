@@ -25,8 +25,6 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(
     CORSMiddleware,
-    allow_methods=["*"],
-    allow_headers=["*"],
     allow_origins=["https://my-portfolio-web-black.vercel.app"],
     allow_methods=["POST", "DELETE"],
     allow_headers=["Content-Type"],
