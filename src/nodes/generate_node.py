@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import AsyncIterator
 from src.agents.state import AgentState
@@ -8,9 +9,14 @@ logger = get_logger(__name__)
 
 
 def _load_system_prompt() -> str:
+    # 1. Environment variable (Railway / any host)
+    if prompt := os.getenv("SYSTEM_PROMPT", "").strip():
+        return prompt
+    # 2. Local file (development)
     prompt_path = Path(__file__).parent.parent / "prompts" / "system_prompt.md"
     if prompt_path.exists():
         return prompt_path.read_text(encoding="utf-8")
+    # 3. Fallback default
     return (
         "You are Sirena, a friendly and professional portfolio assistant. "
         "Answer questions about the portfolio owner based on the provided context and chat history. "
