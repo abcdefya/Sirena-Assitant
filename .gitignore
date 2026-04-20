@@ -1,0 +1,44 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# System / temp files
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
+
+# Config / secrets
+.env
+*.ini
+*.cfg
+
+# System prompt
+system_prompt.md
+system prompt.md
+*system_prompt*.md
+
+# Build / dist
+dist/
+build/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+.claude/
+
+docs/
+data/
+.pytest_cache/
+__pycache__/
