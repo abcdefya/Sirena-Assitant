@@ -39,7 +39,6 @@ build/
 .claude/
 
 docs/
-data/
 .pytest_cache/
 __pycache__/
 tmp_chroma/
